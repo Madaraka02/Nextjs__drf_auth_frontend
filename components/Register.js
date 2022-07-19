@@ -2,9 +2,11 @@ import { Router, useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 function Register() {
-    const [name, setName] = useState('')
+    const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [password2, setPassword2] = useState('')
+
 
     const router = useRouter()
 
@@ -17,7 +19,7 @@ function Register() {
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                name,
+                username,
                 email,
                 password
             })
@@ -25,21 +27,21 @@ function Register() {
         await router.push('/')
     }
     
-    // const register = async (e) => {
-    //     e.preventDefault();
+    const register = async (e) => {
+        e.preventDefault();
 
-    //     await axios.post('',{
-    //         headers:{
-    //             'Accept':'application/json',
-    //             'COntent-Type':'application/json'
-    //         },
-    //         body:JSON.stringify({
-    //             name,
-    //             email,
-    //             password,
-    //         })
-    //     })
-    // }
+        await axios.post('',{
+            headers:{
+                'Accept':'application/json',
+                'COntent-Type':'application/json'
+            },
+            body:JSON.stringify({
+                username,
+                email,
+                password,
+            })
+        })
+    }
 
 
   return (
