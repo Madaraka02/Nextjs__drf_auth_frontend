@@ -194,7 +194,7 @@ export const getStaticProps = async ({ params }) => {
   const { data } = await axios.get(`http://127.0.0.1:8000/api/v1/blogs/${params.slug}`);
   const blog = data;
 
-  console.log(blog.author.id)
+  // console.log(blog.author.id)
   return {
     props: {
       blog,

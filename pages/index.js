@@ -10,16 +10,66 @@ import styles from '../styles/Home.module.css'
 export default function Home(props) {
   const {user, logout} = useContext(AuthenticationContext)
   const router = useRouter()
+  const[title, setTitle] = useState('')
+  const[snippet, setSnippet] = useState('')
+  const[description, setDescription] = useState('')
+  const[image, setImage] = useState(null)
+
+
 
   const blogs = props.data
 
+  const submitHandler = async (e) =>{
+    e.preventDefault();
+    console.log(user)
+    // console.log(blog)
+    // console.log(text)
 
+
+  //   console.log(email)
+
+    const options = {
+        method: "POST",
+        body:JSON.stringify({
+          title,
+          author:user,
+          snippet,
+          description,
+          // image,
+          
+
+        }),
+        headers:{
+            'Content-Type':'application/json',
+            'Accept':'application/json',
+
+
+        }
+
+    }
+    fetch('http://127.0.0.1:8000/api/v1/blogs/create/', options).
+    then(res=>res.json()).then(response=> {
+          console.log(response.author)
+          setTitle('')
+          setSnippet('')
+          setDescription('')
+          setImage(null)
+
+
+
+    }).catch(error=>console.log(error))
+  }
+
+  // handleImageChange = (e) => {
+  //   this.setState({image: e.target.files[0]})};
+  const onFileChange = e => setImage(e.target.files[0])
 
   const handleLogout = async (e) =>{
     e.preventDefault();
     await logout()
   }
 
+  // onFileCHange = e.target.files[0]
 
   return (
     <div className={styles.container}>
@@ -131,12 +181,38 @@ export default function Home(props) {
    </div>
 
  </div>
+ 
+
+
 
  {/* Posts*/} 
  <div className="container mt-4 mb-4">
    <div className="row mt-2 mb-2">
      <div className="col-md-3"></div>
      <div className="col-md-6">
+      { user ? (
+        <>
+       <h6>Post Blog</h6>
+     <form onSubmit={submitHandler}>
+        
+          <input  type="text" id="form4Example1" className="form-control mt-2 mb-2"  placeholder="Title"
+          onChange={(e) => setTitle(e.target.value)}/>
+          <input  type="text" id="form4Example2" className="form-control mt-2 mb-2" placeholder="Snippet"
+          onChange={(e) => setSnippet(e.target.value)}/>
+      
+          <textarea className="form-control mt-2 mb-2" id="form4Example3" placeholder="Description" rows="4"
+          onChange={(e) => setDescription(e.target.value)}></textarea>
+
+         <input  type="file" class="form-control mt-2 mb-2" placeholder="upload image"
+        onChange={onFileChange}/>
+
+
+        <button type="submit" className="btn btn-primary btn-block mb-4 mt-2">Post</button>
+        </form>
+        </>
+        ) : (
+          <h6>Login to post</h6>
+        )}
 
      </div>
      <div className="col-md-3"></div>
